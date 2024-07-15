@@ -32,6 +32,7 @@ import pascal.taie.analysis.pta.PointerAnalysisResult;
 import pascal.taie.analysis.pta.core.cs.element.CSObj;
 import pascal.taie.analysis.pta.core.cs.element.Pointer;
 import pascal.taie.analysis.pta.core.heap.Obj;
+import pascal.taie.analysis.pta.core.solver.PointerFlowGraph;
 import pascal.taie.analysis.pta.core.solver.Solver;
 import pascal.taie.analysis.pta.plugin.taint.TaintFlow;
 import pascal.taie.config.AnalysisOptions;
@@ -41,6 +42,7 @@ import pascal.taie.util.AnalysisException;
 import pascal.taie.util.collection.Lists;
 import pascal.taie.util.collection.Maps;
 import pascal.taie.util.collection.Streams;
+import pascal.taie.util.graph.DotDumper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -109,6 +111,7 @@ public class ResultProcessor implements Plugin {
         boolean taintEnabled = options.getString("taint-config") != null;
         if (options.getBoolean("dump")) {
             dumpPointsToSet(result, taintEnabled);
+            dumpPFG(result); // bz
         }
 
         if (options.getBoolean("dump-ci")) {
@@ -168,6 +171,16 @@ public class ResultProcessor implements Plugin {
 
     private static String format(long i) {
         return formatter.format(i);
+    }
+
+    // bz: expose pfg
+    private static void dumpPFG(PointerAnalysisResult result) {
+        PointerFlowGraph pfg = result.getPointerFlowGraph();
+        // dump the PointerFlowGraph
+        File outFile = new File(World.get().getOptions().getOutputDir(),  "pfg.dot");
+        logger.info("Dumping pointer flow graph to {}",
+                outFile.getAbsolutePath());
+        new DotDumper().dump(pfg, outFile);
     }
 
     private static void dumpPointsToSet(PointerAnalysisResult result,

@@ -32,6 +32,7 @@ import pascal.taie.analysis.pta.core.cs.element.CSVar;
 import pascal.taie.analysis.pta.core.cs.element.InstanceField;
 import pascal.taie.analysis.pta.core.cs.element.StaticField;
 import pascal.taie.analysis.pta.core.heap.Obj;
+import pascal.taie.analysis.pta.core.solver.PointerFlowGraph;
 import pascal.taie.ir.exp.ArrayAccess;
 import pascal.taie.ir.exp.FieldAccess;
 import pascal.taie.ir.exp.InstanceFieldAccess;
@@ -180,4 +181,10 @@ public interface PointerAnalysisResult extends ResultHolder {
      * @return the resulting object flow graph.
      */
     ObjectFlowGraph getObjectFlowGraph();
+
+    /**
+     * bz:
+     * @return PointerFlowGraph
+     */
+    PointerFlowGraph getPointerFlowGraph();
 }

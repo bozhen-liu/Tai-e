@@ -338,6 +338,11 @@ public class PointerAnalysisResultImpl extends AbstractResultHolder
         return callGraph;
     }
 
+    @Override
+    public PointerFlowGraph getPointerFlowGraph() { // bz
+        return pfg;
+    } // bz
+
     /**
      * Removes contexts in a context-sensitive call graph and
      * returns a new resulting call graph.
